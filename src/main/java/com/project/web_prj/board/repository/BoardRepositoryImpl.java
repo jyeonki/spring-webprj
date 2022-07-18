@@ -41,11 +41,33 @@ public class BoardRepositoryImpl implements BoardRepository{
 
     @Override
     public Board findOne(long boardNo) {
-        return null;
+
+        String sql = "SELECT * FROM tbl_board WHERE board_no = ?";
+
+        return template.queryForObject(sql, (rs, rowNum) -> new Board(rs), boardNo);
     }
 
     @Override
     public boolean modify(Board board) {
-        return false;
+
+        String sql = "UPDATE tbl_board SET writer = ?, title = ?, content = ? WHERE board_no = ?";
+
+        return template.update(sql, board.getWriter(), board.getTitle(), board.getContent(), board.getBoardNo()) == 1;
+    }
+
+    @Override
+    public boolean remove(long boardNo) {
+
+        String sql = "DELETE FROM tbl_board WHERE board_no = ?";
+
+        return template.update(sql, boardNo) == 1;
+    }
+
+    @Override
+    public int getTotalCount() {
+
+        String sql = "SELECT COUNT(*) AS cnt FROM tbl_board";
+
+        return template.queryForObject(sql, Integer.class);
     }
 }
