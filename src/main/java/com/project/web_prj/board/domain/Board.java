@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor @AllArgsConstructor // 6개는 보통 기본으로 설정
 public class Board {
 
+    // table column field
     private long boardNo; // table NUMBER(10) -> long
     private String writer;
     private String title;
@@ -17,6 +18,9 @@ public class Board {
     private long viewCnt; // table NUMBER(10) -> long
     private Date regDate; // 등록일자
 
+    // custom data field
+    private String shortTitle;   // 줄임 제목
+    private String prettierDate; // 변경된 날짜포맷 문자열
 
     public Board(ResultSet rs) throws SQLException {
         this.boardNo = rs.getLong("board_no");
@@ -24,6 +28,6 @@ public class Board {
         this.writer = rs.getString("writer");
         this.content = rs.getString("content");
         this.viewCnt = rs.getLong("view_cnt");
-        this.regDate = rs.getDate("reg_date");
+        this.regDate = rs.getTimestamp("reg_date");
     }
 }

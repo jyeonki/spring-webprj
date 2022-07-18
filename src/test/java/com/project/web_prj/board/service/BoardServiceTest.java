@@ -1,7 +1,6 @@
 package com.project.web_prj.board.service;
 
 import com.project.web_prj.board.domain.Board;
-import com.project.web_prj.board.repository.service.BoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
