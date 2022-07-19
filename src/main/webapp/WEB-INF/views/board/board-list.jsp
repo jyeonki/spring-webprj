@@ -138,7 +138,6 @@
         if (msg == 'reg-success') {
             alert('게시물이 성공적으로 등록되었습니다');
         }
-        ///?????????? 확인
 
         // 상세보기 요청 이벤트
         const $table = document.querySelector(".articles");
