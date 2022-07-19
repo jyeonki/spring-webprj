@@ -57,7 +57,7 @@
                         <td>${b.writer}</td>
                         <td title="${b.title}">${b.shortTitle}</td>
                         <!-- td title - 마우스 커서를 td에 놓으면 title값이 뜬다 -->
-                        <td>0</td>
+                        <td>${b.viewCnt}</td>
                         <td>${b.prettierDate}</td>
                     </tr>
                 </c:forEach>
@@ -74,6 +74,15 @@
     </div>
 
     <script>
+
+        const msg = '${msg}';
+        console.log('msg: ', msg);
+
+        if (msg == 'reg-success') {
+            alert('게시물이 성공적으로 등록되었습니다');
+        }
+        ///?????????? 확인
+
         // 상세보기 요청 이벤트
         const $table = document.querySelector(".articles");
         $table.addEventListener('click', e => {
