@@ -13,3 +13,22 @@ CREATE TABLE tbl_board (
     reg_date DATE DEFAULT SYSDATE,
     CONSTRAINT pk_tbl_board PRIMARY KEY (board_no)
 );
+
+
+--Paging query
+
+--SELECT ROWNUM, tbl_board.*
+--FROM tbl_board
+--WHERE ROWNUM BETWEEN 11 AND 20
+--ORDER BY board_no DESC
+--;
+--
+--SELECT *
+--FROM (SELECT ROWNUM rn, v_board.*
+--        FROM(
+--                SELECT *
+--                FROM tbl_board
+--                ORDER BY board_no DESC
+--                ) v_board)
+--WHERE rn BETWEEN 11 AND 20
+--;

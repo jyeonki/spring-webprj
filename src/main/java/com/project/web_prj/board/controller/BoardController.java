@@ -3,6 +3,7 @@ package com.project.web_prj.board.controller;
 import com.project.web_prj.board.domain.Board;
 import com.project.web_prj.board.service.BoardService;
 import com.project.web_prj.common.paging.Page;
+import com.project.web_prj.common.paging.PageMaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /*
      * 게시물 목록 요청: /board/list: GET
@@ -38,17 +40,25 @@ public class BoardController {
 
         log.info("controller request /board/list GET! - page: {}", page);
 
-        List<Board> boardList = boardService.findAllService(page);
-        log.debug("return data - {}",boardList);
+//        List<Board> boardList = boardService.findAllService(page);
+        Map<String, Object> boardMap = boardService.findAllService(page);
+        log.debug("return data - {}", boardMap);
 
-        model.addAttribute("bList", boardList);
+        // 페이지 정보 생성
+//        new PageMaker(page, totalCount);
+//        model.addAttribute("bList", boardList);
+
+        PageMaker pm = new PageMaker(page, (Integer) boardMap.get("tc"));
+        model.addAttribute("bList", boardMap.get("bList"));
+        model.addAttribute("pm", pm);
+
         return "board/board-list";
     }
 
     // 게시물 상세 조회 요청
     @GetMapping("/content/{boardNo}")
     public String content(@PathVariable Long boardNo, Model model, HttpServletResponse response, HttpServletRequest request) {
-        // response 쿠키를 실어서 ㅂ ㅗ내주려고
+        // response 쿠키를 실어서 보내주려고
         log.info("controller request /board/content GET! - {}", boardNo);
 
         Board board = boardService.findOneService(boardNo, response, request);
