@@ -35,7 +35,7 @@ public class BoardController {
         log.info("controller request /board/list GET!");
 
         List<Board> boardList = boardService.findAllService();
-        log.info("return data - {}",boardList);
+        log.debug("return data - {}",boardList);
 
         model.addAttribute("bList", boardList);
         return "board/board-list";
@@ -71,7 +71,38 @@ public class BoardController {
         log.info("controller request /board/write POST! - {}", board);
 
         boolean flag = boardService.saveService(board);
-
         return flag ? "redirect:/board/list" : "redirect:/";
+    }
+
+    // 게시물 삭제 요청
+    @GetMapping("/delete")
+    public String delete(long boardNo) {
+
+        log.info("controller request /board/delete GET! - bno: {}", boardNo);
+
+        return boardService.removeService(boardNo) ? "redirect:/board/list" : "redirect:/";
+    }
+
+    // 게시물 수정 화면 요청
+    @GetMapping("/modify")
+    public String modify(Long boardNo, Model model) {
+        log.info("controller request /board/modify GET! - bno: {}", boardNo);
+        Board board = boardService.findOneService(boardNo);
+        log.info("find article: {}", board);
+
+        model.addAttribute("board", board);
+        return "board/board-modify";
+    }
+
+    // 게시물 수정 요청
+    @PostMapping("/modify")
+    public String modify(Board board) {
+        // POST 방식은 파라미터를 쓸 수 없다 (/modify/3 은 가능 /modify?boardNo=3 은 불가능 (GET 방식))
+        // Input type="hidden"으로 값을 보내줘야 한다
+
+        log.info("controller request /board/modify POST! - {}", board);
+
+        boolean flag = boardService.modifyService(board);
+        return flag ? "redirect:/board/content/" + board.getBoardNo() : "redirect:/";
     }
 }
