@@ -2,7 +2,6 @@ package com.project.web_prj.board.service;
 
 import com.project.web_prj.board.domain.Board;
 import com.project.web_prj.board.repository.BoardMapper;
-import com.project.web_prj.board.repository.BoardRepository;
 import com.project.web_prj.common.paging.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
