@@ -66,6 +66,7 @@ class BoardMapperTest {
         int totalCount = mapper.getTotalCount();
 
         System.out.println("totalCount = " + totalCount);
-        assertTrue(totalCount == 307);
+//        assertTrue(totalCount == 307);
+        assertEquals(307, totalCount);
     }
 }
