@@ -32,3 +32,16 @@ CREATE TABLE tbl_board (
 --                ) v_board)
 --WHERE rn BETWEEN 11 AND 20
 --;
+
+
+-- search
+--SELECT  *
+--FROM (SELECT ROWNUM rn, v_board.*
+--        FROM (
+--                SELECT *
+--                FROM tbl_board
+--                WHERE title LIKE '%30%'
+--                ORDER BY board_no DESC
+--                ) v_board)
+--WHERE rn BETWEEN 1 AND 10
+--;

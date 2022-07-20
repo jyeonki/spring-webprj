@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 속성에는 사용할 인터페이스의 풀 패키지 경로 + 인터페이스 이름 -->
+<mapper namespace="com.project.web_prj.board.repository.BoardMapper">
+
+    <!-- 게시글 쓰기 기능 -->
+    <!--<insert id="save">
+        INSERT INTO tbl_board
+        (board_no, writer, title, content, view_cnt, reg_date)
+        VALUES (seq_tbl_board.nextval, #{writer}, #{title}, #{content}, #{viewCnt}, #{regDate})
+    </insert>-->
+    <insert id="save">
+        INSERT INTO tbl_board
+        (board_no, writer, title, content)
+        VALUES (seq_tbl_board.nextval, #{writer}, #{title}, #{content})
+    </insert>
+
+
+
+    <resultMap id="boardMap" type="com.project.web_prj.board.domain.Board">
+
+        <!-- property 속성에는 자바 필드명, column 속성에는 DB 컬럼명 -->
+        <result property="boardNo" column="board_no"/>
+        <result property="viewCnt" column="view_cnt"/>
+        <result property="regDate" column="reg_date"/>
+
+    </resultMap>
+
+    <!-- 게시글 전체 조회 with paging-->
+    <select id="findAll" resultMap="boardMap">
+        SELECT * FROM tbl_board
+        ORDER BY board_no
+    </select>
+
+    <!-- 동적 SQL 작성법  -->
+    <!-- 게시글 전체 조회 with paging-->
+    <select id="findAllWithPaging" resultMap="boardMap">
+        SELECT *
+        FROM (SELECT ROWNUM rn, v_board.*
+            FROM(
+                SELECT *
+                FROM tbl_board
+                ORDER BY board_no DESC
+                ) v_board)
+        WHERE rn BETWEEN (#{pageNum} - 1) * #{amount} + 1  AND (#{pageNum} * #{amount})
+    </select>
+
+    <!-- 게시글 상세 조회 -->
+    <select id="findOne" resultMap="boardMap">
+        SELECT * FROM tbl_board
+        WHERE board_no = #{boardNo}
+    </select>
+
+    <!-- 게시글 수정 -->
+    <update id="modify">
+        UPDATE tbl_board
+        SET writer = #{writer}, title = #{title}, content = #{content}
+        WHERE board_no = #{boardNo}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="remove">
+        DELETE FROM tbl_board
+        WHERE board_no = #{boardNo}
+    </delete>
+
+    <!-- 전체 게시물 수 조회 -->
+    <select id="getTotalCount"  resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_board
+    </select>
+
+    <!-- 조회수 상승 처리 -->
+    <update id="upViewCount">
+        UPDATE tbl_board
+        SET view_cnt = view_cnt + 1
+        WHERE board_no = #{boardNo}
+    </update>
+</mapper>
