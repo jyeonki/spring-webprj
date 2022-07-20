@@ -57,7 +57,7 @@ public class BoardController {
 
     // 게시물 상세 조회 요청
     @GetMapping("/content/{boardNo}")
-    public String content(@PathVariable Long boardNo, Model model, HttpServletResponse response, HttpServletRequest request) {
+    public String content(@PathVariable Long boardNo, Model model, HttpServletResponse response, HttpServletRequest request, @ModelAttribute("p") Page page) {
         // response 쿠키를 실어서 보내주려고
         log.info("controller request /board/content GET! - {}", boardNo);
 
@@ -66,6 +66,7 @@ public class BoardController {
 
         // 데이터를 실어서 보내줄 model
         model.addAttribute("b", board);
+//        model.addAttribute("p", page); // = @ModelAttribute("p") Page page
         return "board/board-detail";
     }
 
