@@ -3,6 +3,7 @@ package com.project.web_prj.board.service;
 import com.project.web_prj.board.domain.Board;
 import com.project.web_prj.board.repository.BoardMapper;
 import com.project.web_prj.common.paging.Page;
+import com.project.web_prj.common.search.Search;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -109,6 +110,30 @@ public class BoardMapperService {
         Map<String, Object> findDataMap = new HashMap<>();
 
         List<Board> boardList = mapper.findAllWithPaging(page);
+
+        // 목록 중간 데이터 처리
+        processConverting(boardList);
+
+        // 글제목 줄임 처리 ctrl + alt + m
+//        subStringTitle(boardList);
+
+        // 시간 포맷팅 처리 ctrl + alt + m
+//        convertDateFormat(boardList);
+
+        findDataMap.put("bList", boardList);
+        findDataMap.put("tc", mapper.getTotalCount());
+
+        return findDataMap;
+    }
+
+    // 게시물 전체 조회 요청 중간 처리 with searching
+    public Map<String,Object> findAllWithSearchService(Search search) {
+        log.info("findAll service start");
+//        return repository.findAll();
+
+        Map<String, Object> findDataMap = new HashMap<>();
+
+        List<Board> boardList = mapper.findAllWithSearch(search);
 
         // 목록 중간 데이터 처리
         processConverting(boardList);

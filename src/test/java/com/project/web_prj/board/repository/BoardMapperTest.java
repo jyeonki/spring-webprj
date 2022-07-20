@@ -2,6 +2,7 @@ package com.project.web_prj.board.repository;
 
 import com.project.web_prj.board.domain.Board;
 import com.project.web_prj.common.paging.Page;
+import com.project.web_prj.common.search.Search;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,14 @@ class BoardMapperTest {
 
         Page page = new Page(1, 20);
         mapper.findAllWithPaging(page).forEach(System.out::println);
+    }
+
+    @Test
+    @DisplayName("전체 게시물 정보가 조회되어야 한다.")
+    void findAllWithSearchTest() {
+
+//        Search search = new Search(new Page(1, 10), "writer", "김코히");
+//        mapper.findAllWithSearch(search).forEach(System.out::println);
     }
 
     @Test

@@ -29,7 +29,7 @@
 
     </resultMap>
 
-    <!-- 게시글 전체 조회 with paging-->
+    <!-- 게시글 전체 조회 -->
     <select id="findAll" resultMap="boardMap">
         SELECT * FROM tbl_board
         ORDER BY board_no
@@ -44,8 +44,27 @@
                 SELECT *
                 FROM tbl_board
                 ORDER BY board_no DESC
-                ) v_board)
+                ) v_board
+            )
         WHERE rn BETWEEN (#{pageNum} - 1) * #{amount} + 1  AND (#{pageNum} * #{amount})
+    </select>
+
+    <!-- 게시글 전체 조회 with search-->
+    <select id="findAllWithSearch" resultMap="boardMap">
+        SELECT  *
+        FROM (SELECT ROWNUM rn, v_board.*
+            FROM (
+                SELECT *
+                FROM tbl_board
+                <if test="type == 'title'">WHERE title LIKE '%' || #{keyword} || '%'</if>
+                <if test="type == 'writer'">WHERE writer LIKE '%' || #{keyword} || '%'</if>
+                <if test="type == 'content'">WHERE content LIKE '%' || #{keyword} || '%'</if>
+                <if test="type == 'tc'">WHERE title LIKE '%' || #{keyword} || '%' OR content LIKE '%' || #{keyword} || '%'</if>
+                ORDER BY board_no DESC
+                ) v_board
+            )
+<!--        WHERE rn BETWEEN (#{page.pageNum} - 1) * #{page.amount} + 1 AND (#{page.pageNum} * #{page.amount})-->
+        WHERE rn BETWEEN (#{pageNum} - 1) * #{amount} + 1 AND (#{pageNum} * #{amount})
     </select>
 
     <!-- 게시글 상세 조회 -->
