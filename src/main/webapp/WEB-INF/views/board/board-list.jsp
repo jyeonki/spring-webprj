@@ -29,8 +29,7 @@
         .board-list .amount {
             display: flex;
             /* background: skyblue; */
-            justify-content: flex-end;
-            /* 맨 끝으로 */
+            justify-content: flex-end; /* 맨 끝으로 */
         }
 
         .board-list .amount li {
@@ -47,6 +46,33 @@
         header {
             background: #222;
             border-bottom: 1px solid #2c2c2c;
+        }
+
+        /* 검색창 */
+        .board-list .top-section {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .board-list .top-section .search {
+            flex: 4;
+        }
+
+        .board-list .top-section .amount {
+            flex: 4;
+        }
+
+        .board-list .top-section .search form {
+            display: flex;
+        }
+
+        .board-list .top-section .search form #search-type {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .board-list .top-section .search form input[name=keyword] {
+            flex: 3;
         }
 
 
@@ -99,11 +125,11 @@
                         <select class="form-select" name="type" id="search-type">
                             <option value="title">제목</option>
                             <option value="content">내용</option>
-                            <option value="write">작성자</option>
+                            <option value="writer">작성자</option>
                             <option value="tc">제목+내용</option>
                         </select>
 
-                        <input type="text" class="form-control" name="keyword">
+                        <input type="text" class="form-control" name="keyword" value="${s.keyword}">
 
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search"></i>
@@ -113,35 +139,36 @@
 
                 </div>
 
-
+                <!-- 목록 개수별 보기 영역 -->
                 <ul class="amount">
                     <li><a class="btn btn-danger" href="/board/list?amount=10">10</a></li>
                     <li><a class="btn btn-danger" href="/board/list?amount=20">20</a></li>
                     <li><a class="btn btn-danger" href="/board/list?amount=30">30</a></li>
                 </ul>
-
-                <table class="table table-dark table-striped table-hover articles">
-                    <tr>
-                        <th>번호</th>
-                        <th>작성자</th>
-                        <th>제목</th>
-                        <th>조회수</th>
-                        <th>작성시간</th>
-                    </tr>
-
-                    <c:forEach var="b" items="${bList}">
-                        <!-- <tr data-board-no="${b.boardNo}"> 상세보기 요청할 때 -->
-                        <tr>
-                            <td>${b.boardNo}</td>
-                            <td>${b.writer}</td>
-                            <td title="${b.title}">${b.shortTitle}</td>
-                            <!-- td title - 마우스 커서를 td에 놓으면 title값이 뜬다 -->
-                            <td>${b.viewCnt}</td>
-                            <td>${b.prettierDate}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
             </div>
+
+            <table class="table table-dark table-striped table-hover articles">
+                <tr>
+                    <th>번호</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>조회수</th>
+                    <th>작성시간</th>
+                </tr>
+
+                <c:forEach var="b" items="${bList}">
+                    <!-- <tr data-board-no="${b.boardNo}"> 상세보기 요청할 때 -->
+                    <tr>
+                        <td>${b.boardNo}</td>
+                        <td>${b.writer}</td>
+                        <td title="${b.title}">${b.shortTitle}</td>
+                        <!-- td title - 마우스 커서를 td에 놓으면 title값이 뜬다 -->
+                        <td>${b.viewCnt}</td>
+                        <td>${b.prettierDate}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+
             <!-- 게시글 목록 하단 영역 -->
             <div class="bottom-section">
 
@@ -152,7 +179,7 @@
                         <c:if test="${pm.prev}">
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="/board/list?pageNum=${pm.beginPage - 1}&amount=${pm.page.amount}">prev</a>
+                                    href="/board/list?pageNum=${pm.beginPage - 1}&amount=${pm.page.amount}&type=${s.type}&keyword=${s.keyword}">prev</a>
                             </li>
                         </c:if>
 
@@ -162,7 +189,7 @@
 
                             <li data-page-num="${n}" class="page-item">
                                 <!-- data 속성 부여 -->
-                                <a class="page-link" href="/board/list?pageNum=${n}&amount=${pm.page.amount}">${n}</a>
+                                <a class="page-link" href="/board/list?pageNum=${n}&amount=${pm.page.amount}&type=${s.type}&keyword=${s.keyword}">${n}</a>
                             </li>
 
                         </c:forEach>
@@ -170,7 +197,7 @@
                         <c:if test="${pm.next}">
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="/board/list?pageNum=${pm.endPage + 1}&amount=${pm.page.amount}">next</a>
+                                    href="/board/list?pageNum=${pm.endPage + 1}&amount=${pm.page.amount}&type=${s.type}&keyword=${s.keyword}">next</a>
                             </li>
                         </c:if>
 
@@ -219,7 +246,7 @@
             });
         }
 
-        //현재 위치한 페이지에 active 스타일 부여하기
+        // 현재 위치한 페이지에 active 스타일 부여하기
         function appendPageActive() {
 
             // 현재 내가 보고 있는 페이지 넘버
@@ -238,14 +265,28 @@
             }
         }
 
+        // 옵션태그 고정
+        function fixSearchOption() {
+            const $select = document.getElementById('search-type');
+
+            for (let $opt of [...$select.children]) {
+                if ($opt.value === '${s.type}') {
+                    $opt.setAttribute('selected', 'selected');
+                    break;
+                }
+            }
+        }
+
 
         (function () {
 
             alertServerMessage();
             detailEvent();
             appendPageActive();
+            fixSearchOption();
 
         })();
+
     </script>
 
 </body>

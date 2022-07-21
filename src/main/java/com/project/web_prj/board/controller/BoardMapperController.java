@@ -36,7 +36,7 @@ public class BoardMapperController {
 
     // 게시물 목록 요청
     @GetMapping("/list")
-    public String list(Search search, Model model) {
+    public String list(@ModelAttribute("s") Search search, Model model) {
 
         log.info("controller request /board/list GET! - search: {}", search);
 
