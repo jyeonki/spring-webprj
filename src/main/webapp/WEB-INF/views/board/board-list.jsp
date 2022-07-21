@@ -161,7 +161,12 @@
                     <tr>
                         <td>${b.boardNo}</td>
                         <td>${b.writer}</td>
-                        <td title="${b.title}">${b.shortTitle}</td>
+                        <td title="${b.title}">
+                            ${b.shortTitle} 
+                            <c:if test="${b.newArticle}">
+                                <span class="badge rounded-pill bg-danger">new</span>
+                            </c:if>
+                        </td>
                         <!-- td title - 마우스 커서를 td에 놓으면 title값이 뜬다 -->
                         <td>${b.viewCnt}</td>
                         <td>${b.prettierDate}</td>
