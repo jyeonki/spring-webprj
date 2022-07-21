@@ -36,6 +36,8 @@ public interface BoardMapper {
 
     // 전체 게시물 수 조회
     int getTotalCount();
+    int getTotalCountWithSearch(Search search); //검색할 때 검색 건수에 따라 밑에 페이징 수 조절을 위해 WHERE 절 추가
+
 
     // 조회수 상승 처리
     void upViewCount(Long boardNo);

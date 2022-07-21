@@ -86,10 +86,22 @@
         WHERE board_no = #{boardNo}
     </delete>
 
+
     <!-- 전체 게시물 수 조회 -->
     <select id="getTotalCount"  resultType="int">
         SELECT COUNT(*)
         FROM tbl_board
+    </select>
+
+    <!-- 전체 게시물 수 조회 -->
+    <select id="getTotalCountWithSearch"  resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_board
+        <if test="type == 'title'">WHERE title LIKE '%' || #{keyword} || '%'</if>
+        <if test="type == 'writer'">WHERE writer LIKE '%' || #{keyword} || '%'</if>
+        <if test="type == 'content'">WHERE content LIKE '%' || #{keyword} || '%'</if>
+        <if test="type == 'tc'">WHERE title LIKE '%' || #{keyword} || '%' OR content LIKE '%' || #{keyword} || '%'</if>
+        <!-- 검색할 때 검색 건수에 따라 밑에 페이징 수 조절을 위해 WHERE 절 추가-->
     </select>
 
     <!-- 조회수 상승 처리 -->

@@ -145,7 +145,7 @@ public class BoardMapperService {
 //        convertDateFormat(boardList);
 
         findDataMap.put("bList", boardList);
-        findDataMap.put("tc", mapper.getTotalCount());
+        findDataMap.put("tc", mapper.getTotalCountWithSearch(search));
 
         return findDataMap;
     }

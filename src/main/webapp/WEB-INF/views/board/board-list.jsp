@@ -29,7 +29,8 @@
         .board-list .amount {
             display: flex;
             /* background: skyblue; */
-            justify-content: flex-end; /* 맨 끝으로 */
+            justify-content: flex-end;
+            /* 맨 끝으로 */
         }
 
         .board-list .amount li {
@@ -38,7 +39,7 @@
         }
 
         .board-list .amount li a {
-            width: 100%; 
+            width: 100%;
             /* li의 100% */
         }
 
@@ -89,34 +90,58 @@
 
         <div class="board-list">
 
-            <ul class="amount">
-                <li><a class="btn btn-danger" href="/board/list?amount=10">10</a></li>
-                <li><a class="btn btn-danger" href="/board/list?amount=20">20</a></li>
-                <li><a class="btn btn-danger" href="/board/list?amount=30">30</a></li>
-            </ul>
+            <div class="top-section">
+                <!-- 검색창 영역 -->
+                <div class="search">
 
-            <table class="table table-dark table-striped table-hover articles">
-                <tr>
-                    <th>번호</th>
-                    <th>작성자</th>
-                    <th>제목</th>
-                    <th>조회수</th>
-                    <th>작성시간</th>
-                </tr>
+                    <form action="/board/list" method="get">
 
-                <c:forEach var="b" items="${bList}">
-                    <!-- <tr data-board-no="${b.boardNo}"> 상세보기 요청할 때 -->
+                        <select class="form-select" name="type" id="search-type">
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                            <option value="write">작성자</option>
+                            <option value="tc">제목+내용</option>
+                        </select>
+
+                        <input type="text" class="form-control" name="keyword">
+
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <ul class="amount">
+                    <li><a class="btn btn-danger" href="/board/list?amount=10">10</a></li>
+                    <li><a class="btn btn-danger" href="/board/list?amount=20">20</a></li>
+                    <li><a class="btn btn-danger" href="/board/list?amount=30">30</a></li>
+                </ul>
+
+                <table class="table table-dark table-striped table-hover articles">
                     <tr>
-                        <td>${b.boardNo}</td>
-                        <td>${b.writer}</td>
-                        <td title="${b.title}">${b.shortTitle}</td>
-                        <!-- td title - 마우스 커서를 td에 놓으면 title값이 뜬다 -->
-                        <td>${b.viewCnt}</td>
-                        <td>${b.prettierDate}</td>
+                        <th>번호</th>
+                        <th>작성자</th>
+                        <th>제목</th>
+                        <th>조회수</th>
+                        <th>작성시간</th>
                     </tr>
-                </c:forEach>
-            </table>
 
+                    <c:forEach var="b" items="${bList}">
+                        <!-- <tr data-board-no="${b.boardNo}"> 상세보기 요청할 때 -->
+                        <tr>
+                            <td>${b.boardNo}</td>
+                            <td>${b.writer}</td>
+                            <td title="${b.title}">${b.shortTitle}</td>
+                            <!-- td title - 마우스 커서를 td에 놓으면 title값이 뜬다 -->
+                            <td>${b.viewCnt}</td>
+                            <td>${b.prettierDate}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
             <!-- 게시글 목록 하단 영역 -->
             <div class="bottom-section">
 
@@ -126,7 +151,8 @@
 
                         <c:if test="${pm.prev}">
                             <li class="page-item">
-                                <a class="page-link" href="/board/list?pageNum=${pm.beginPage - 1}&amount=${pm.page.amount}">prev</a>
+                                <a class="page-link"
+                                    href="/board/list?pageNum=${pm.beginPage - 1}&amount=${pm.page.amount}">prev</a>
                             </li>
                         </c:if>
 
@@ -143,7 +169,8 @@
 
                         <c:if test="${pm.next}">
                             <li class="page-item">
-                                <a class="page-link" href="/board/list?pageNum=${pm.endPage + 1}&amount=${pm.page.amount}">next</a>
+                                <a class="page-link"
+                                    href="/board/list?pageNum=${pm.endPage + 1}&amount=${pm.page.amount}">next</a>
                             </li>
                         </c:if>
 
@@ -163,7 +190,6 @@
     </div>
 
     <script>
-
         function alertServerMessage() {
             const msg = '${msg}';
             // console.log('msg: ', msg);
@@ -188,7 +214,8 @@
                 let bn = e.target.parentElement.firstElementChild.textContent;
                 console.log('글번호: ' + bn);
 
-                location.href = '/board/content/' + bn + "?pageNum=${pm.page.pageNum}" + "&amount=${pm.page.amount}";
+                location.href = '/board/content/' + bn + "?pageNum=${pm.page.pageNum}" +
+                    "&amount=${pm.page.amount}";
             });
         }
 
