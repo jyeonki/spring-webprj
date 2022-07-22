@@ -77,7 +77,7 @@ public class BoardMapperController {
 
         log.info("controller request /board/write GET!");
 
-        return "/board/board-write";
+        return "board/board-write";
     }
 
     // 게시글 등록 요청
