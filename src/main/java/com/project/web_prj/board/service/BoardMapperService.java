@@ -15,7 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +25,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardMapperService {
 
-    private final BoardMapper mapper;
+    private final BoardMapper boardMapper;
     private final ReplyMapper replyMapper;
 
     // 게시물 등록 요청 중간 처리
     public boolean saveService(Board board) {
         log.info("save service start - {}", board);
-        return mapper.save(board);
+        return boardMapper.save(board);
     }
 
     // 게시물 전체 조회 요청 중간 처리
@@ -40,7 +39,7 @@ public class BoardMapperService {
         log.info("findAll service start");
 //        return repository.findAll();
 
-        List<Board> boardList = mapper.findAll();
+        List<Board> boardList = boardMapper.findAll();
 
         // 목록 중간 데이터 처리
         processConverting(boardList);
@@ -140,7 +139,7 @@ public class BoardMapperService {
 
         Map<String, Object> findDataMap = new HashMap<>();
 
-        List<Board> boardList = mapper.findAllWithPaging(page);
+        List<Board> boardList = boardMapper.findAllWithPaging(page);
 
         // 목록 중간 데이터 처리
         processConverting(boardList);
@@ -152,7 +151,7 @@ public class BoardMapperService {
 //        convertDateFormat(boardList);
 
         findDataMap.put("bList", boardList);
-        findDataMap.put("tc", mapper.getTotalCount());
+        findDataMap.put("tc", boardMapper.getTotalCount());
 
         return findDataMap;
     }
@@ -164,7 +163,7 @@ public class BoardMapperService {
 
         Map<String, Object> findDataMap = new HashMap<>();
 
-        List<Board> boardList = mapper.findAllWithSearch(search);
+        List<Board> boardList = boardMapper.findAllWithSearch(search);
 
         // 목록 중간 데이터 처리
         processConverting(boardList);
@@ -176,7 +175,7 @@ public class BoardMapperService {
 //        convertDateFormat(boardList);
 
         findDataMap.put("bList", boardList);
-        findDataMap.put("tc", mapper.getTotalCountWithSearch(search));
+        findDataMap.put("tc", boardMapper.getTotalCountWithSearch(search));
 
         return findDataMap;
     }
@@ -189,7 +188,7 @@ public class BoardMapperService {
 
         // 트랜잭션 처리 - 동시에 일어나야 한다
         // 상세보기는 뜨지 않는데 조회수가 올라가면 안된다, 반대의 경우도 마찬가지
-        Board board = mapper.findOne(boardNo);
+        Board board = boardMapper.findOne(boardNo);
 
         // 해당 게시물 번호에 해당하는 쿠키가 있는지 확인
         // 쿠키가 없으면 조회수를 상승시켜주고, 쿠키를 만들어서 클라이언트에 전송
@@ -204,7 +203,7 @@ public class BoardMapperService {
         Cookie foundCookie = WebUtils.getCookie(request, "b" + boardNo);
 
         if (foundCookie == null) {
-            mapper.upViewCount(boardNo);
+            boardMapper.upViewCount(boardNo);
 
 //        new Cookie("쿠키이름", "쿠키값"); // 쿠키 생성
             Cookie cookie = new Cookie("b" + boardNo, String.valueOf(boardNo)); // 쿠키 생성
@@ -215,16 +214,22 @@ public class BoardMapperService {
         }
     }
 
+    @Transactional
     // 게시물 삭제 요청 중간 처리
     public boolean removeService(Long boardNo) {
         log.info("remove service start - {}", boardNo);
-        return mapper.remove(boardNo);
+
+        // 댓글 먼저 모두 삭제
+        replyMapper.removeAll(boardNo);
+        // 원본게시물 삭제
+        boolean remove = boardMapper.remove(boardNo);
+        return remove;
     }
 
     // 게시물 수정 요청 중간 처리
     public boolean modifyService(Board board) {
         log.info("modify service start - {}", board);
-        return mapper.modify(board);
+        return boardMapper.modify(board);
     }
 }
 
