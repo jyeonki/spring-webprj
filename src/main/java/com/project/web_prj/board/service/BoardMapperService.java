@@ -4,6 +4,7 @@ import com.project.web_prj.board.domain.Board;
 import com.project.web_prj.board.repository.BoardMapper;
 import com.project.web_prj.common.paging.Page;
 import com.project.web_prj.common.search.Search;
+import com.project.web_prj.reply.repository.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.Map;
 public class BoardMapperService {
 
     private final BoardMapper mapper;
+    private final ReplyMapper replyMapper;
 
     // 게시물 등록 요청 중간 처리
     public boolean saveService(Board board) {
@@ -57,8 +59,14 @@ public class BoardMapperService {
             convertDateFormat(b);
             substringTitle(b);
             checkNewArticle(b);
+            setReplyCount(b);
         }
     }
+
+    private void setReplyCount(Board b) {
+        b.setReplyCount(replyMapper.getReplyCount(b.getBoardNo()));
+    }
+
 
     private void checkNewArticle(Board b) {
 

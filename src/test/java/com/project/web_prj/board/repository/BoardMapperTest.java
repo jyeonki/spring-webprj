@@ -20,10 +20,15 @@ class BoardMapperTest {
     @DisplayName("게시글 정보가 저장되어야 한다.")
     void saveTest() {
 
-        Board board = new Board();
+        Board board;
+        for (int i = 1; i <= 300; i++) {
+            board = new Board();
+            board.setTitle("제목" + i);
+            board.setWriter("길동이" + i);
+            board.setContent("안녕하세요오오~~" + i);
 
-        mapper.save(board);
-        System.out.println(board);
+            mapper.save(board);
+        }
     }
 
     @Test
