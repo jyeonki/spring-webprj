@@ -13,6 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 @RequestMapping("/api/v1/replies")
+@CrossOrigin // 허용
 public class ReplyApiController {
 
     private final ReplyService replyService; // 의존 객체 주입

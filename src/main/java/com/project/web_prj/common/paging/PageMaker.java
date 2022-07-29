@@ -21,6 +21,8 @@ public class PageMaker {
 
     private Page page; // 현재 위치한 페이지 정보
     private int totalCount; // 총 게시물 수
+    
+    private int finalPage; // 진짜 마지막 페이지 정보
 
     public PageMaker(Page page, int totalCount) {
         this.page = page;
@@ -55,6 +57,8 @@ public class PageMaker {
         */
         
         int realEnd = (int)Math.ceil((double) totalCount / page.getAmount());
+        
+        this.finalPage = realEnd;
         
         // 그러면 끝페이지 보정은 언제 일어나야 하는가
         // 마지막 페이지 구간에서 일어날 수도 있고, 아닐 수도 있다

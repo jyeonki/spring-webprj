@@ -24,6 +24,7 @@ public class ReplyService {
         Map<String, Object> replyMap = new HashMap<>();
         replyMap.put("replyList", replyMapper.findAll(boardNo, page));
         replyMap.put("maker", maker);
+        replyMap.put("replyCnt", replyMapper.getReplyCount(boardNo));
 
         return replyMap;
     }
