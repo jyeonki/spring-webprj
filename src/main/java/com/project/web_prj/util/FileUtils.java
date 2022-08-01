@@ -18,7 +18,7 @@ public class FileUtils {
      *
      * @param file - 클라이언트가 업로드한 파일 정보
      * @param uploadPath - 서버의 업로드 루트 디렉토리 (E:/sl_dev/upload)
-     * @return - 업로드가 완료된 새로운 파일의 이름
+     * @return - 업로드가 완료된 새로운 파일의 full Path
      */
     public static String uploadFile(MultipartFile file, String uploadPath){
 
@@ -38,7 +38,10 @@ public class FileUtils {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        
+
+        // 파일의 풀 경로 (디렉토리 경로 + 파일명)
+        //String fileFullPath = newUploadPath + File.separator + newFileName;
+
         return newFileName;
     }
 
