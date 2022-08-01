@@ -15,7 +15,10 @@
     <form action="/upload" method="post" enctype="multipart/form-data"> 
         <!-- 파일은 무조건 POST! -->
         <!-- enctype="multipart/form-data" - '내가 지금 보내는 건 파일 형식입니다' 라고 명시해준다 -->
-        <input type="file" name="file">
+        
+        <input type="file" name="file" multiple>
+        <!-- mutiple : 파일 여러개 업로드 가능 -->
+        
         <button type="submit">업로드</button>
     </form>
 
