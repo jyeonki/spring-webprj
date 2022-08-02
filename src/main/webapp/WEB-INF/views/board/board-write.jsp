@@ -39,7 +39,7 @@
 
         <div class="write-container">
 
-            <form id="write-form" action="/board/write" method="post" autocomplete="off">
+            <form id="write-form" action="/board/write" method="post" autocomplete="off" enctype="multipart/form-data">
 
                 <div class="mb-3">
                     <label for="writer-input" class="form-label">작성자</label>
@@ -147,10 +147,18 @@
             // 파일의 확장자에 따른 렌더링 처리
             function checkExtType(fileName) {
 
-                //원본 파일 명 추출
+                // 원본 파일 명 추출
                 let originFileName = fileName.substring(fileName.indexOf("_") + 1);
 
-                //확장자 추출후 이미지인지까지 확인
+                // hidden input을 만들어서 변환 파일명을 서버로 넘김
+                const $hiddenInput = document.createElement('input');
+                $hiddenInput.setAttribute('type', 'hidden');
+                $hiddenInput.setAttribute('name', 'fileNames');
+                $hiddenInput.setAttribute('value', fileName);
+
+                $('#write-form').append($hiddenInput);
+
+                // 확장자 추출후 이미지인지까지 확인
                 if (isImageFile(originFileName)) { // 파일이 이미지라면
 
                     const $img = document.createElement('img');

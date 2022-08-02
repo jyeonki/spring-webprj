@@ -244,5 +244,10 @@ public class BoardMapperService {
         log.info("modify service start - {}", board);
         return boardMapper.modify(board);
     }
+    
+    // 첨부파일 목록 가져오는 중간처리
+    public List<String> getFiles(Long bno) {
+        return boardMapper.findFileNames(bno);
+    }
 }
 

@@ -195,19 +195,19 @@
            = [...document.querySelector('div[role=group]').children];
 
         // const $modBtn = document.getElementById('mod-btn');
-        //수정버튼
+        // 수정버튼
         $modBtn.onclick = e => {
             location.href = '/board/modify?boardNo=${b.boardNo}';
         };
 
-        //삭제버튼
+        // 삭제버튼
         $delBtn.onclick = e => {
             if(!confirm('정말 삭제하시겠습니까?')) {
                 return;
             }
             location.href = '/board/delete?boardNo=${b.boardNo}';
         };
-        //목록버튼
+        // 목록버튼
         $listBtn.onclick = e => {
             location.href = '/board/list?pageNum=${p.pageNum}&amount=${p.amount}';
         };
@@ -222,19 +222,19 @@
         // 댓글 요청 URL
         const URL = '/api/v1/replies';
 
-        //날짜 포맷 변환 함수
+        // 날짜 포맷 변환 함수
         function formatDate(datetime) {
-                //문자열 날짜 데이터를 날짜객체로 변환
+                // 문자열 날짜 데이터를 날짜객체로 변환
                 const dateObj = new Date(datetime);
                 // console.log(dateObj);
-                //날짜객체를 통해 각 날짜 정보 얻기
+                // 날짜객체를 통해 각 날짜 정보 얻기
                 let year = dateObj.getFullYear();
-                //1월이 0으로 설정되어있음.
+                // 1월이 0으로 설정되어있음.
                 let month = dateObj.getMonth() + 1;
                 let day = dateObj.getDate();
                 let hour = dateObj.getHours();
                 let minute = dateObj.getMinutes();
-                //오전, 오후 시간체크
+                // 오전, 오후 시간체크
                 let ampm = '';
                 if (hour < 12 && hour >= 6) {
                     ampm = '오전';
@@ -249,7 +249,7 @@
                 } else {
                     ampm = '새벽';
                 }
-                //숫자가 1자리일 경우 2자리로 변환
+                // 숫자가 1자리일 경우 2자리로 변환
                 (month < 10) ? month = '0' + month: month;
                 (day < 10) ? day = '0' + day: day;
                 (hour < 10) ? hour = '0' + hour: hour;
@@ -262,19 +262,19 @@
             let tag = "";
             const begin = pageInfo.beginPage;
             const end = pageInfo.endPage;
-            //이전 버튼 만들기
+            // 이전 버튼 만들기
             if (pageInfo.prev) {
                 tag += "<li class='page-item'><a class='page-link page-active' href='" + (begin - 1) +
                     "'>이전</a></li>";
             }
-            //페이지 번호 리스트 만들기
+            // 페이지 번호 리스트 만들기
             for (let i = begin; i <= end; i++) {
                 const active = (pageInfo.page.pageNum === i) ? 'p-active' : '';
                 tag += "<li class='page-item " + active + "'><a class='page-link page-custom' href='" + i +
                     "'>" +
                     i + "</a></li>";
             }
-            //다음 버튼 만들기
+            // 다음 버튼 만들기
             if (pageInfo.next) {
                 tag += "<li class='page-item'><a class='page-link page-active' href='" + (end + 1) +
                     "'>다음</a></li>";

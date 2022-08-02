@@ -18,6 +18,7 @@ FOREIGN KEY (bno)
 REFERENCES tbl_board (board_no)
 ON DELETE CASCADE;
 
+
 SELECT a.board_no, a.writer, a.title, b.file_name, b.bno
-FROM tbl_board a. file_upload b.
+FROM tbl_board a, file_upload b
 WHERE a.board_no = b.bno;

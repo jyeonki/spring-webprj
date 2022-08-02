@@ -85,10 +85,10 @@
              // 파일의 확장자에 따른 렌더링 처리
              function checkExtType(fileName) {
 
-                //원본 파일 명 추출
+                // 원본 파일 명 추출
                 let originFileName = fileName.substring(fileName.indexOf("_") + 1);
 
-                //확장자 추출후 이미지인지까지 확인
+                // 확장자 추출후 이미지인지까지 확인
                 if (isImageFile(originFileName)) { // 파일이 이미지라면
 
                     const $img = document.createElement('img');

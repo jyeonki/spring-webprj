@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,5 +76,20 @@ class BoardMapperTest {
         System.out.println("totalCount = " + totalCount);
 //        assertTrue(totalCount == 307);
         assertEquals(307, totalCount);
+    }
+
+    @Test
+    @DisplayName("특정 게시물에 첨부된 파일경로들을 조회한다.")
+    void findFileNamesTest() {
+
+        // given
+        Long bno = 304L;
+
+        // when
+        List<String> fileNames = mapper.findFileNames(bno);
+
+        // then
+        fileNames.forEach(System.out::println);
+        assertEquals(1, fileNames.size());
     }
 }
