@@ -674,7 +674,7 @@
                     $img.setAttribute('alt', originFileName);
 
                     $a.append($img);
-                    $a.innerHTML += '<span>' + originFileName + '</span';
+                    $a.innerHTML += '<span>' + originFileName + '</span>';
 
                     $('.uploaded-list').append($a);
                 }
