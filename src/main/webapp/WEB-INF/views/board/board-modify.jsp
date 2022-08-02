@@ -74,7 +74,7 @@
 
                 <div class="btn-group btn-group-lg custom-btn-group" role="group">
                     <button id="mod-btn" type="submit" class="btn btn-warning">완료</button>
-                    <button type="button" class="btn btn-dark">목록</button>
+                    <button id="to-list" type="button" class="btn btn-dark">목록</button>
                 </div>
 
             </form>
@@ -85,6 +85,15 @@
         
     </div>
 
+    <script>
+
+        // 목록버튼 이벤트
+        const $toList = document.getElementById('to-list');
+        $toList.onclick = e => {
+            location.href = '/board/list';
+        };
+
+    </script>
 
 </body>
 

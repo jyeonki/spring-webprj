@@ -12,6 +12,24 @@
         margin: 200px auto 150px;
         font-size: 1.2em;
     }
+
+    .fileDrop {
+        width: 600px;
+        height: 200px;
+        border: 1px dashed gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+    }
+    .uploaded-list {
+        display: flex;
+    }
+    .img-sizing {
+        display: block;
+        width: 100px;
+        height: 100px;
+    }
 </style>
 </head>
 
@@ -36,6 +54,22 @@
                     <label for="exampleFormControlTextarea1" class="form-label">내용</label>
                     <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
                 </div>
+
+
+                <!-- 첨부파일 드래그 앤 드롭 영역 -->
+                <div class="form-group">
+                    <div class="fileDrop">
+                        <span>Drop Here!!</span>
+                    </div>
+                    <div class="uploadDiv">
+                        <input type="file" name="files" id="ajax-file" style="display:none;">
+                    </div>
+                    <!-- 업로드된 파일의 썸네일을 보여줄 영역 -->
+                    <div class="uploaded-list">
+
+                    </div>
+                </div>
+
 
                 <div class="d-grid gap-2">
                     <button id="reg-btn" class="btn btn-dark" type="button">글 작성하기</button>
@@ -97,6 +131,132 @@
         $toList.onclick = e => {
             location.href = '/board/list';
         };
+
+
+
+        // start JQuery
+        // jQuery 즉시 실행 함수
+        $(document).ready(function () {
+
+            function isImageFile(originFileName) {
+                //정규표현식
+                const pattern = /jpg$|gif$|png$/i; // $ : -로 끝나는, i : 대소문자 구별 X
+                return originFileName.match(pattern);
+            }
+
+            // 파일의 확장자에 따른 렌더링 처리
+            function checkExtType(fileName) {
+
+                //원본 파일 명 추출
+                let originFileName = fileName.substring(fileName.indexOf("_") + 1);
+
+                //확장자 추출후 이미지인지까지 확인
+                if (isImageFile(originFileName)) { // 파일이 이미지라면
+
+                    const $img = document.createElement('img');
+                    $img.classList.add('img-sizing');
+                    $img.setAttribute('src', '/loadFile?fileName=' + fileName); 
+                    $img.setAttribute('alt', originFileName); // 원본 파일 이름
+
+                    $('.uploaded-list').append($img);
+                }
+
+                // 이미지가 아니라면 다운로드 링크를 생성
+                else {
+
+                    // a태그 생성
+                    const $a = document.createElement('a');
+                    $a.setAttribute('href', '/loadFile?fileName=' + fileName);
+
+                    // img태그 생성
+                    const $img = document.createElement('img');
+                    $img.classList.add('img-sizing');
+                    $img.setAttribute('src', '/img/file_icon.jpg'); 
+                    $img.setAttribute('alt', originFileName); 
+
+
+                    $a.append($img);
+                    $a.innerHTML += '<span>' + originFileName + '</span>';
+
+                    $('.uploaded-list').append($a);
+                }
+                
+            }
+
+            // 드롭한 파일을 화면에 보여주는 함수
+            function showFileData(fileNames) {
+
+                // 이미지인지? 이미지가 아닌지에 따라 구분하여 처리
+                // 이미지면 썸네일을 렌더링하고 아니면 다운로드 링크를 렌더링한다.
+                for (let fileName of fileNames) {
+                    checkExtType(fileName);
+                }
+            }
+
+
+            // drag & drop 이벤트
+            const $dropBox = $('.fileDrop');
+
+            // drag 진입 이벤트
+            $dropBox.on('dragover dragenter', e => {
+                e.preventDefault(); 
+                $dropBox
+                    .css('border-color', 'red')
+                    .css('background', 'lightgray');
+            });
+
+            // drag 탈출 이벤트
+            $dropBox.on('dragleave', e => {
+                e.preventDefault(); 
+                $dropBox
+                    .css('border-color', 'gray')
+                    .css('background', 'transparent');
+            });
+
+            // drop 이벤트
+            $dropBox.on('drop', e => {
+                e.preventDefault();
+                // console.log('drop 이벤트 작동!');
+
+                // 드롭된 파일 정보를 서버로 전송
+
+                // 1. 드롭된 파일 데이터 읽기
+                // console.log(e);
+                const files = e.originalEvent.dataTransfer.files;
+                // console.log('drop file data: ', files);
+
+                // 2. 원본 파일 데이터를 input[type=file]태그에 저장
+                const $fileInput = $('#ajax-file');
+                $fileInput.prop('files', files);
+
+                // console.log($fileInput);
+
+                // 3. 파일 데이터를 비동기 전송하기 위해서는 FormData 객체가 필요
+                const formData = new FormData();
+
+                // 4. 전송할 파일들을 전부 FormData 안에 포장
+                for (let file of $fileInput[0].files) {
+                    formData.append('files', file); // 'files' 서버에서 읽는 이름, name이랑 맞춰주는게 좋다
+                }
+
+                // 5. 비동기 요청 전송
+                const reqInfo = {
+                    method: 'POST',
+                    body: formData
+                };
+                fetch('/ajax-upload', reqInfo)
+                    .then(res => {
+                        // console.log(res.status);
+                        return res.json();
+                    })
+                    .then(fileNames => {
+                        console.log(fileNames);
+
+                        showFileData(fileNames);
+                    })
+            })
+        }); 
+
     </script>
 
 </body>
