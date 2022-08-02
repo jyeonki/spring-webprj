@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class UploadController {
     // 비동기 요청 파일 업로드 처리
     @PostMapping("/ajax-upload")
     @ResponseBody
-    public List<String> ajaxUpload(List<MultipartFile> files) {
+    public ResponseEntity<List<String>> ajaxUpload(List<MultipartFile> files) {
 
         log.info("/ajax-upload POST! - {}", files.get(0).getOriginalFilename());
 
@@ -82,7 +83,7 @@ public class UploadController {
             fileNames.add(fullPath);
         }
 
-        return fileNames;
+        return new ResponseEntity<>(fileNames, HttpStatus.OK);
     }
     
     // 파일 데이터 로드 요청 처리
@@ -120,6 +121,17 @@ public class UploadController {
 
             if (mediaType != null) { // 이미지라면
                 headers.setContentType(mediaType);
+            } else { // 이미지가 아니라면 다운로드 가능하게 설정
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+                // 파일명을 원래대로 복구
+                fileName = fileName.substring(fileName.lastIndexOf("_") + 1);
+
+                // 파일명이 한글인 경우 인코딩 재설정
+                String encoding = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO-8859-1");
+
+                // header 에 위 내용들 추가
+                headers.add("Content-Disposition", "attachment; fileName=\"" + encoding +"\"");
             }
             
             // 4. 파일 순수 데이터 바이트배열에 저장

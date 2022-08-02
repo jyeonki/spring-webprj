@@ -149,7 +149,7 @@
             <!-- 댓글 수정 모달 -->
             <div class="modal fade bd-example-modal-lg" id="replyModifyModal"> 
                 <!-- 
-                    modal을 여는 버튼(수정 버튼) data-bs-target 값이 id값이 일치해야한다 
+                    modal을 여는 버튼(수정 버튼) data-bs-target 값이 id값과 일치해야한다 
                     data-bs-target='#replyModifyModal'
                 -->
                 <div class="modal-dialog modal-lg">
@@ -434,10 +434,10 @@
             // const replyText = e.target.closest('div.col-md-6').textContent;
             const replyText = e.target.parentElement.parentElement.firstElementChild.textContent;
 
-            //console.log('댓글내용:', replyText);
+            console.log('댓글내용:', replyText);
 
             // 모달에 해당 댓글내용을 배치한다.
-            document.getElementById('modReplyText').textContent = replyText;
+            document.getElementById('modReplyText').value = replyText;
 
             // 모달을 띄울 때 다음 작업(수정완료처리)을 위해 댓글번호를 모달에 달아두자.
             const $modal = document.querySelector('.modal');
