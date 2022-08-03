@@ -59,8 +59,15 @@ public class MemberController {
 
     // 로그인 화면을 열어주는 요청처리
     @GetMapping("/sign-in")
-    public void signIn() {
+    public void signIn(HttpServletRequest request) {
         log.info("/member/sign-in GET! - forwarding to sign-in.jsp");
+
+        // 요청정보 헤더 안에는 Referer 이라는 키가 있는데
+        // 여기 안에는 이 페이지로 진입할 때 어디에서 왔는지 URI 정보가 들어있음
+        String referer = request.getHeader("Referer");
+        log.info("referer : {}", referer);
+
+        request.getSession().setAttribute("redirectURI", referer);
     }
 
     // 로그인 요청 처리
@@ -74,7 +81,9 @@ public class MemberController {
 
         if (flag == LoginFlag.SUCCESS) {
             log.info("Login SUCCESS!");
-            return "redirect:/";
+
+            String redirectURI = (String) session.getAttribute("redirectURI");
+            return "redirect:" + redirectURI;
         }
 
         ra.addFlashAttribute("loginMsg", flag);
