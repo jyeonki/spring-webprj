@@ -18,15 +18,25 @@
     </insert>
 
 
-    <!-- 중복체크 기능 -->
-    <select id="isDuplicate">
-
+    <!-- 중복체크 기능 (아이디, 이메일) -->
+    <select id="isDuplicate" resultType="int">
+    <!-- Map<>을 보내면 resultType에 key값을 적어야한다 -->
+        SELECT COUNT(*)
+        FROM tbl_member
+        <if test="type== 'account'">
+            WHERE account = #{value}
+        </if>
+        <if test="type== 'email'">
+            WHERE email = #{value}
+        </if>
     </select>
 
 
     <!-- 회원 조회 기능 -->
-    <select id="findUser">
-
+    <select id="findUser" resultMap="memberMap">
+        SELECT *
+        FROM tbl_member
+        WHERE account = #{account}
     </select>
 
 
