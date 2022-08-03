@@ -59,9 +59,11 @@
                                 <td>
                                     <label for="auto-login">
                                         <span>
-                                        <i class="fa fa-sign-in" aria-hidden="true"></i> 
+                                        <i class="fas fa-sign-in-alt"></i>
+                                        <!-- <i class="fa fa-sign-in" aria-hidden="true"></i>  -->
                                         자동 로그인
-                                        <input type="checkbox" id="auto-login" name="isAutoLogin">
+                                        <input type="checkbox" id="auto-login" name="autoLogin">
+                                        <!-- input name 값이 LoginDTO 필드 값과 같아야 한다 -->
                                         </span>
                                     </label>
                                 </td>
@@ -106,9 +108,19 @@
     <script>
 
         const msg = '${msg}';
-        
+
         if (msg === 'reg-success') {
             alert('축하합니다! 회원가입에 성공했습니다.')
+        }
+
+        const loginMsg = '${loginMsg}';
+        if (loginMsg === 'NO_ACC') {
+
+            alert('존재하지 않는 회원입니다.')
+
+        } else if (loginMsg === 'NO_PW') {
+
+            alert('비밀번호가 틀렸습니다.')
         }
 
 

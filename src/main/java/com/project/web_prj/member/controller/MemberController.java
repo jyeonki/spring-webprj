@@ -1,6 +1,8 @@
 package com.project.web_prj.member.controller;
 
 import com.project.web_prj.member.domain.Member;
+import com.project.web_prj.member.dto.LoginDTO;
+import com.project.web_prj.member.service.LoginFlag;
 import com.project.web_prj.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -56,5 +58,22 @@ public class MemberController {
     @GetMapping("/sign-in")
     public void signIn() {
         log.info("/member/sign-in GET! - forwarding to sign-in.jsp");
+    }
+
+    // 로그인 요청 처리
+    @PostMapping("/sign-in")
+    public String signIn(LoginDTO inputData, RedirectAttributes ra) {
+        log.info("/member/sign-in POST! - {}", inputData);
+    
+        // 로그인 서비스 호출
+        LoginFlag flag = memberService.login(inputData);
+
+        if (flag == LoginFlag.SUCCESS) {
+            log.info("Login SUCCESS!");
+            return "redirect:/";
+        }
+
+        ra.addFlashAttribute("loginMsg", flag);
+        return "redirect:/member/sign-in";
     }
 }
