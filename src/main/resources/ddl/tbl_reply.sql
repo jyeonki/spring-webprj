@@ -11,3 +11,5 @@ CREATE TABLE tbl_reply (
     FOREIGN KEY (board_no)
     REFERENCES tbl_board (board_no)
 );
+
+ALTER TABLE tbl_reply ADD account VARCHAR2(50) NOT NULL;

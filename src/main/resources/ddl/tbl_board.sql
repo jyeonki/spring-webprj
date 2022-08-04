@@ -14,6 +14,13 @@ CREATE TABLE tbl_board (
     CONSTRAINT pk_tbl_board PRIMARY KEY (board_no)
 );
 
+ALTER TABLE tbl_board ADD account VARCHAR2(50) NOT NULL;
+
+
+-- 내용 삭제?
+TRUNCATE TABLE tbl_reply;
+DELETE FROM tbl_board;
+TRUNCATE TABLE file_upload;
 
 --Paging query
 

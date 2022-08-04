@@ -19,6 +19,8 @@ public class Board {
     private long viewCnt; // table NUMBER(10) -> long
     private Date regDate; // 등록일자
 
+    private String account; // 계정명
+
     // custom data field
     private String shortTitle;   // 줄임 제목
     private String prettierDate; // 변경된 날짜포맷 문자열

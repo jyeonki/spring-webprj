@@ -91,12 +91,6 @@
 
             </div>
 
-            <div class="btn-group btn-group-lg custom-btn-group" role="group" >
-                <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
-                <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
-                <button id="list-btn" type="button" class="btn btn-dark">목록</button>
-            </div>
-
 
             <!-- 파일 첨부 영역 -->
             <div class="form-group">
@@ -105,6 +99,19 @@
                 <ul class="uploaded-list"></ul>            
                 
             </div>
+
+
+            <!-- 버튼 영역 -->
+            <div class="btn-group btn-group-lg custom-btn-group" role="group" >
+
+                <c:if test="${loginUser.account == b.account || loginUser.auth == 'ADMIN'}">
+                    <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
+                    <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
+                </c:if>
+
+                <button id="list-btn" type="button" class="btn btn-dark">목록</button>
+            </div>
+
 
 
             <!-- 댓글 영역 -->
@@ -211,27 +218,39 @@
 
     <!-- 게시글 상세보기 관련 script -->
     <script>
-        const [$modBtn, $delBtn, $listBtn] 
-           = [...document.querySelector('div[role=group]').children];
 
-        // const $modBtn = document.getElementById('mod-btn');
-        // 수정버튼
-        $modBtn.onclick = e => {
-            location.href = '/board/modify?boardNo=${b.boardNo}';
-        };
+        // const [$modBtn, $delBtn, $listBtn] 
+        //    = [...document.querySelector('div[role=group]').children];
+        const $modBtn = document.getElementById('mod-btn');
+        const $delBtn = document.getElementById('del-btn');
+        const $listBtn = document.getElementById('list-btn');
 
-        // 삭제버튼
-        $delBtn.onclick = e => {
-            if(!confirm('정말 삭제하시겠습니까?')) {
-                return;
-            }
-            location.href = '/board/delete?boardNo=${b.boardNo}';
-        };
-        // 목록버튼
+        if ($modBtn !== null) {
+
+            //수정버튼
+            $modBtn.onclick = e => {
+                location.href = '/board/modify?boardNo=${b.boardNo}';
+            };
+        }
+
+        if ($delBtn !== null) {
+
+            //삭제버튼
+            $delBtn.onclick = e => {
+                if (!confirm('정말 삭제하시겠습니까?')) {
+                    return;
+                }
+                location.href = '/board/delete?boardNo=${b.boardNo}';
+            };
+        }
+        //목록버튼
         $listBtn.onclick = e => {
+            console.log('목록버튼 클릭!');
             location.href = '/board/list?pageNum=${p.pageNum}&amount=${p.amount}';
         };
+        
     </script>
+
 
     <!-- 댓글 관련 script -->
     <script>

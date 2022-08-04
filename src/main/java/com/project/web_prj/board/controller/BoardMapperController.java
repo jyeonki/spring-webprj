@@ -5,6 +5,7 @@ import com.project.web_prj.board.service.BoardMapperService;
 import com.project.web_prj.common.paging.Page;
 import com.project.web_prj.common.paging.PageMaker;
 import com.project.web_prj.common.search.Search;
+import com.project.web_prj.util.LoginUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -92,7 +93,7 @@ public class BoardMapperController {
 
     // 게시글 등록 요청
     @PostMapping("/write")
-    public String write(Board board, @RequestParam("files") List<MultipartFile> fileList, RedirectAttributes ra) {
+    public String write(Board board, @RequestParam("files") List<MultipartFile> fileList, RedirectAttributes ra, HttpSession session) {
 
         log.info("controller request /board/write POST! - {}", board);
 
@@ -105,6 +106,9 @@ public class BoardMapperController {
             // board 객체에 파일명 추가
             board.setFileNames(fileNames);
         }*/ // original file name, size 꺼낼 때 쓸 code
+
+        // 현재 로그인 사용자 계정명 추가
+        board.setAccount(LoginUtils.getCurrentMemberAccount(session));
 
         boolean flag = boardService.saveService(board);
 
