@@ -121,29 +121,36 @@
                     <!-- 댓글 쓰기 영역 -->
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
 
+                            <c:if test="${empty loginUser}">
+                                <a href="/member/sign-in">댓글은 로그인 후 작성 가능합니다.</a>
+                            </c:if>
+                            
+                        
+                            <!-- 로그인 한 유저만 댓글 등록창 보여주기 -->
+                            <c:if test="${not empty loginUser}"> 
+                                <div class="row">
 
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <label for="newReplyText" hidden>댓글 내용</label>
-                                        <textarea rows="3" id="newReplyText" name="replyText" class="form-control"
-                                            placeholder="댓글을 입력해주세요."></textarea>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label for="newReplyText" hidden>댓글 내용</label>
+                                            <textarea rows="3" id="newReplyText" name="replyText" class="form-control"
+                                                placeholder="댓글을 입력해주세요."></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="newReplyWriter" hidden>댓글 작성자</label>
-                                        <input id="newReplyWriter" name="replyWriter" type="text" class="form-control"
-                                            placeholder="작성자 이름" style="margin-bottom: 6px;">
-                                        <button id="replyAddBtn" type="button"
-                                            class="btn btn-dark form-control">등록</button>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="newReplyWriter" hidden>댓글 작성자</label>
+                                            <input id="newReplyWriter" name="replyWriter" type="text" class="form-control"
+                                                placeholder="작성자 이름" style="margin-bottom: 6px;" readonly value="${loginUser.name}">
+                                            <button id="replyAddBtn" type="button"
+                                                class="btn btn-dark form-control">등록</button>
+                                        </div>
                                     </div>
+
+
                                 </div>
-
-
-
-                            </div>
+                            </c:if>
                         </div>
                     </div> <!-- end reply write -->
 
@@ -254,6 +261,14 @@
 
     <!-- 댓글 관련 script -->
     <script>
+
+        // 로그인한 회원 계정명
+        const currentAccount = '${loginUser.account}';
+
+        // 계정 종류
+        const auth = '${loginUser.auth}';
+
+
         // 원본 글 번호
         let bno = '${b.boardNo}'
         // console.log('bno: ', bno);
@@ -351,12 +366,18 @@
                             "    </div><br>" +
                             "    <div class='row'>" +
                             "       <div class='col-md-6'>" + rep.replyText + "</div>" +
-                            "       <div class='offset-md-2 col-md-4 text-right'>" +
-                            "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
-                            "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>" +
-                            "       </div>" +
-                            "    </div>" +
-                            " </div>";
+                            "       <div class='offset-md-2 col-md-4 text-right'>";
+                            
+                            if (currentAccount === rep.account || auth === 'ADMIN') {
+                                tag += 
+                                    "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
+                                    "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>";
+                            }
+                            
+                            tag += 
+                                "       </div>" +
+                                "    </div>" +
+                                " </div>";
                 }
             }
 
