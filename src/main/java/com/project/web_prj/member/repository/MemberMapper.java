@@ -1,6 +1,7 @@
 package com.project.web_prj.member.repository;
 
 import com.project.web_prj.member.domain.Member;
+import com.project.web_prj.member.dto.AutoLoginDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Map;
@@ -19,4 +20,7 @@ public interface MemberMapper {
 
     // 회원정보 조회 기능
     Member findUser(String account);
+    
+    // 자동로그인 쿠키정보 저장
+    void saveAutoLoginValue(AutoLoginDTO dto);
 }

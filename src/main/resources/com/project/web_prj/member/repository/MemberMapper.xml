@@ -9,6 +9,7 @@
         <result property="regDate" column="red_date"/>
     </resultMap>
 
+
     <!-- 회원 가입 기능 -->
     <insert id="register">
         INSERT INTO tbl_member
@@ -39,10 +40,13 @@
         WHERE account = #{account}
     </select>
 
+    <!-- 자동로그인 쿠키 정보 저장 -->
+    <update id="saveAutoLoginValue">
 
+        UPDATE tbl_member
+        SET session_id = #{sessionId}, limit_time = #{limitTime}
+        WHERE account = #{account}
 
-
-
-
+    </update>
 
 </mapper>

@@ -11,6 +11,10 @@ CREATE TABLE tbl_member (
     CONSTRAINT pk_member PRIMARY KEY (account)
 );
 
+-- 자동로그인 관련 컬럼 추가 (세션 고유ID, 수명)
+ALTER TABLE tbl_member ADD session_id VARCHAR2(200) DEFAULT 'none';
+ALTER TABLE tbl_member ADD limit_time DATE;
+
 SELECT * FROM tbl_member;
 
 -- 로그인 이력
