@@ -81,10 +81,10 @@ public class BoardMapperController {
     @GetMapping("/write")
     public String write(HttpSession session, RedirectAttributes ra) {
 
-        if (session.getAttribute("loginUser") == null) {
-            ra.addFlashAttribute("warningMsg", "forbidden");
-            return "redirect:/member/sign-in";
-        }
+//        if (session.getAttribute("loginUser") == null) {
+//            ra.addFlashAttribute("warningMsg", "forbidden");
+//            return "redirect:/member/sign-in";
+//        } interceptor 처리해서 필요 없음
 
         log.info("controller request /board/write GET!");
         return "board/board-write";

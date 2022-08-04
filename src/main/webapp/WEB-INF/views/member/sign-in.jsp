@@ -123,12 +123,17 @@
             alert('비밀번호가 틀렸습니다.')
         }
 
-        const warning = '${warningMsg}';
-        if (warning === 'forbidden') {
+        // const warning = '${warningMsg}';
+        // if (warning === 'forbidden') {
             
+        //     alert('로그인 후 사용할 수 있습니다.');
+        // }
+
+        const warning = '${message}';
+        if (warning === 'no-login') {
+            console.log("로그인 후 사용 가능");
             alert('로그인 후 사용할 수 있습니다.');
         }
-
 
     </script>
 
