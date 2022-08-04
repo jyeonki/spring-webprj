@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -118,11 +119,22 @@ public class BoardMapperController {
         return flag ? "redirect:/board/list" : "redirect:/";
     }
 
-    // 게시물 삭제 요청
+    // 게시물 삭제 확인 요청
     @GetMapping("/delete")
-    public String delete(long boardNo) {
+    public String delete(@ModelAttribute("boardNo") Long boardNo, Model model) {
 
         log.info("controller request /board/delete GET! - bno: {}", boardNo);
+
+//        model.addAttribute("board", boardService.findOneService(boardNo, response, request));
+        model.addAttribute("validate", boardService.getMember(boardNo));
+
+        return "board/process-delete";
+    }
+
+    // 게시물 삭제 확정 요청
+    @PostMapping("/delete")
+    public String delete(Long boardNo) {
+        log.info("controller request /board/delete POST! - bno: {}", boardNo);
 
         return boardService.removeService(boardNo) ? "redirect:/board/list" : "redirect:/";
     }
@@ -134,7 +146,9 @@ public class BoardMapperController {
         Board board = boardService.findOneService(boardNo, response, request);
         log.info("find article: {}", board);
 
-        model.addAttribute("board", board);
+        model.addAttribute("board", board); // jsp 사용
+        model.addAttribute("validate", boardService.getMember(boardNo)); // 인터셉터에서 사용
+
         return "board/board-modify";
     }
 

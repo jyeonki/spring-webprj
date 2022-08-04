@@ -127,4 +127,16 @@
     </select>
 
 
+    <select id="findMemberByBoardNo" resultType="com.project.web_prj.board.dto.ValidateMemberDTO">
+
+        SELECT account, auth
+        FROM tbl_member
+        WHERE account = (
+                            SELECT account
+                            FROM tbl_board
+                            WHERE board_no = #{boardNo}
+                        )
+
+    </select>
+
 </mapper>

@@ -18,4 +18,10 @@ public class LoginUtils {
         Member member = (Member) session.getAttribute(LOGIN_FLAG);
         return member.getAccount();
     }
+
+    // 로그인한 사용자 권한 가져오기
+    public static String getCurrentMemberAuth(HttpSession session) {
+        Member member = (Member) session.getAttribute(LOGIN_FLAG);
+        return member.getAuth().toString();
+    }
 }

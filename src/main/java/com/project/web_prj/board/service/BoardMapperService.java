@@ -1,6 +1,7 @@
 package com.project.web_prj.board.service;
 
 import com.project.web_prj.board.domain.Board;
+import com.project.web_prj.board.dto.ValidateMemberDTO;
 import com.project.web_prj.board.repository.BoardMapper;
 import com.project.web_prj.common.paging.Page;
 import com.project.web_prj.common.search.Search;
@@ -248,6 +249,13 @@ public class BoardMapperService {
     // 첨부파일 목록 가져오는 중간처리
     public List<String> getFiles(Long bno) {
         return boardMapper.findFileNames(bno);
+    }
+
+
+
+    // 게시물 번호로 글쓴이 회원정보 가져오기
+    public ValidateMemberDTO getMember(Long boardNo) {
+        return boardMapper.findMemberByBoardNo(boardNo);
     }
 }
 
