@@ -54,7 +54,7 @@
                     SELECT *
                     FROM tbl_reply
                     WHERE board_no = #{boardNo}
-                    ORDER BY board_no DESC
+                    ORDER BY reply_no
                 ) v_reply
             )
         WHERE rn BETWEEN (#{page.pageNum} - 1) * #{page.amount} + 1 AND (#{page.pageNum} * #{page.amount})
