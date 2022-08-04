@@ -7,6 +7,8 @@
 
     <resultMap id="memberMap" type="com.project.web_prj.member.domain.Member">
         <result property="regDate" column="red_date"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="limitTime" column="limit_time"/>
     </resultMap>
 
 
@@ -49,4 +51,9 @@
 
     </update>
 
+    <!-- 쿠키값(세션아이디)을 가지고 있는 회원정보 조회 -->
+    <select id="findMemberBySessionId" resultMap="memberMap">
+        SELECT * FROM tbl_member
+        WHERE session_id = #{sessionId}
+    </select>
 </mapper>

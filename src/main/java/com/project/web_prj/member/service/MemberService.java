@@ -4,12 +4,14 @@ import com.project.web_prj.member.domain.Member;
 import com.project.web_prj.member.dto.AutoLoginDTO;
 import com.project.web_prj.member.dto.LoginDTO;
 import com.project.web_prj.member.repository.MemberMapper;
+import com.project.web_prj.util.LoginUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -102,7 +104,7 @@ public class MemberService {
     private void keepLogin(String account, HttpSession session, HttpServletResponse response) {
         // 1. 자동로그인 쿠키 생성 - 쿠키의 값으로 현재 세션의 아이디를 저장
         String sessionId = session.getId();
-        Cookie c = new Cookie("autoLoginCookie", sessionId);
+        Cookie c = new Cookie(LoginUtils.LOGIN_COOKIE, sessionId);
 
         // 2. 쿠키 설정 (수명, 사용경로)
         int limitTime = 60 * 60 * 24 * 90; // 90일에 대한 초
@@ -125,5 +127,25 @@ public class MemberService {
         dto.setAccount(account);
 
         memberMapper.saveAutoLoginValue(dto);
+    }
+
+    // 자동로그인 해제
+    public void autoLogout(String account, HttpServletRequest request, HttpServletResponse response) {
+
+        // 1. 자동로그인 쿠키를 불러온 뒤 수명을 0초로 세팅해서 클라이언트에 돌려보낸다
+        Cookie c = LoginUtils.getAutoLoginCookie(request);
+
+        if (c != null) {
+            c.setMaxAge(0);
+            response.addCookie(c);
+
+            // 2. 데이터베이스 처리
+            AutoLoginDTO dto = new AutoLoginDTO();
+            dto.setSessionId("none");
+            dto.setLimitTime(new Date());
+            dto.setAccount(account);
+
+            memberMapper.saveAutoLoginValue(dto);
+        }
     }
 }

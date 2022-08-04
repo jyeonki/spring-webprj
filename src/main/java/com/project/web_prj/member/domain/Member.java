@@ -15,4 +15,7 @@ public class Member {
     private String email;
     private Auth auth;
     private Date regDate; // 공통컬럼 빼서 상속으로 만드는 것도 생각해보기
+
+    private String sessionId;
+    private Date limitTime;
 }

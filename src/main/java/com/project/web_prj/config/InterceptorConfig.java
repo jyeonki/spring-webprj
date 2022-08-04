@@ -1,6 +1,7 @@
 package com.project.web_prj.config;
 
 import com.project.web_prj.interceptor.AfterLoginInterceptor;
+import com.project.web_prj.interceptor.AutoLoginInterceptor;
 import com.project.web_prj.interceptor.BoardInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     private final BoardInterceptor boardInterceptor;
     private final AfterLoginInterceptor afterLoginInterceptor;
+    private final AutoLoginInterceptor autoLoginInterceptor;
 
     // 인터셉터 설정 추가 메서드
     @Override
@@ -26,5 +28,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // AfterLogin 인터셉터 설정
         registry.addInterceptor(afterLoginInterceptor)
                 .addPathPatterns("/member/sign-in", "/member/sign-up");
+
+        // AutoLogin 인터셉터 설정
+        registry.addInterceptor(autoLoginInterceptor)
+                .addPathPatterns("/**");
+
     }
 }
