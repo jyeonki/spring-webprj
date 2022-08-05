@@ -18,4 +18,6 @@ public class Member {
 
     private String sessionId;
     private Date limitTime;
+
+    private int sns; // sns 연동
 }

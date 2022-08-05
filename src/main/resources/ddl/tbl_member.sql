@@ -15,6 +15,11 @@ CREATE TABLE tbl_member (
 ALTER TABLE tbl_member ADD session_id VARCHAR2(200) DEFAULT 'none';
 ALTER TABLE tbl_member ADD limit_time DATE;
 
+-- sns 로그인 코드 설정
+ALTER TABLE tbl_member ADD sns NUMBER(5);
+
+
 SELECT * FROM tbl_member;
+
 
 -- 로그인 이력
