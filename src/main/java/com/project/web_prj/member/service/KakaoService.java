@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 @Service
@@ -145,5 +146,33 @@ public class KakaoService implements OAuthService, OAuthValue {
         }
 
         return null;
+    }
+
+    public void logout(String accessToken) throws Exception {
+
+        String reqUri = "https://kapi.kakao.com/v1/user/logout";
+
+        URL url = new URL(reqUri);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setRequestMethod("POST"); // 요청 방식 설정
+
+        conn.setRequestProperty("Authorization", "Bearer " + accessToken );
+        conn.setDoOutput(true); // 응답 결과를 받겠다.
+
+        int responseCode = conn.getResponseCode();
+        log.info("logout response-code - {}", responseCode);
+
+        //  응답 데이터 받기
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+
+            String responseData = br.readLine();
+            log.info("responseData - {}", responseData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
