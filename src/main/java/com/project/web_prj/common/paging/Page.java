@@ -20,6 +20,7 @@ public class Page {
 
     public void setPageNum(int pageNum) {
         if (pageNum <= 0 || pageNum > Integer.MAX_VALUE) {
+            // pageNum이 0 이하이거나 최대값 이상일 경우 pageNum 1로 강제로 돌림
             this.pageNum = 1;
             return;
         }
